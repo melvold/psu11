@@ -7,6 +7,10 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.naming.AuthenticationException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -26,8 +30,6 @@ import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import com.melvold.sms.crypto.CryptoUtils;
 import com.melvold.sms.macros.Macros;
@@ -50,7 +52,7 @@ public class Communication {
 
 		try {
 			if(!this.authenticate(bid, password)) {
-				System.out.println("Authentication failed!");
+				throw new AuthenticationException();
 			}
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
@@ -61,12 +63,15 @@ public class Communication {
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (AuthenticationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
 	private boolean authenticate(String bid, String password) throws ClientProtocolException, IOException, NoSuchAlgorithmException {
 		HttpClient client = getNewSecureAuthHttpClient();
-		HttpPost post = new HttpPost("/" + Macros.FOLDER + "/hdsk1.php");
+		HttpPost post = new HttpPost("/" + Macros.FOLDER + "/login.php");
 
 		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
 		nvp.add(new BasicNameValuePair("bid", bid));
@@ -81,12 +86,12 @@ public class Communication {
 			//				System.out.println(h.getName() + " " + h.getValue());
 			//			}
 
-			/*			HttpEntity entity = response.getEntity();
+			HttpEntity entity = response.getEntity();
 			InputStream is = entity.getContent();
 
 			String result = responseToString(is);
-
-			JSONArray jArray = new JSONArray(result);*/
+			System.out.println(result);
+			//JSONArray jArray = new JSONArray(result);
 
 			this.sessionId = response.getFirstHeader("Set-Cookie").getValue();
 			this.authenticated = true;
@@ -99,7 +104,7 @@ public class Communication {
 		}
 	}
 
-	public JSONArray post(String script, ArrayList<NameValuePair> nvp){
+	public ArrayList<ArrayList<String>> post(String script, ArrayList<NameValuePair> nvp){
 		if(!this.authenticated) {
 			return null;
 		}
@@ -126,10 +131,18 @@ public class Communication {
 			InputStream is = entity.getContent();
 
 			String result = responseToString(is);
-			//System.out.println(result);
-			JSONArray jArray = new JSONArray(result);
+			System.out.println(result);
+			ArrayList<ArrayList<String>> array = stringToArray(result);
+			String test = "";
+			for(int i = 0; i < array.size(); i++){
+				for(int j = 0; j < array.get(i).size(); j++){
+					test+= array.get(i).get(j) + ", ";
+				}
+				test+="\n-------------------------\n";
+			}
+			System.out.println(test);
 
-			return jArray;
+			return array;
 
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -137,18 +150,14 @@ public class Communication {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			//System.out.println("ERROR: The received data can not be interpreted as one or more JSON objects");
-			return null;
-			//e.printStackTrace();
 		}
 
 		return null;
 	}
 
+
 	private static String responseToString(InputStream is) throws IOException{
-		BufferedReader br = new BufferedReader(new InputStreamReader(is,"iso-8859-1"));//TODO: UTF8?
+		BufferedReader br = new BufferedReader(new InputStreamReader(is,"ISO8859-1"));//TODO: UTF8?
 		StringBuilder sb = new StringBuilder();
 		String line = null;
 		while ((line = br.readLine()) != null) {
@@ -156,6 +165,33 @@ public class Communication {
 		}
 		is.close();
 		return sb.toString();
+	}
+
+	private ArrayList<ArrayList<String>> stringToArray(String result) {
+		ArrayList<ArrayList<String>> array = new ArrayList<ArrayList<String>>();
+		Pattern rowPattern = Pattern.compile("<row>.*?</row>");
+		Matcher m1 = rowPattern.matcher(result);
+		String row = "";
+		String id = "";
+		int i = 0;
+		while (m1.find()) {
+			row = m1.group();
+			row = row.substring(5, row.length() - 6);
+			Pattern idPattern = Pattern.compile("<id>.*?</id>");
+			Matcher m2 = idPattern.matcher(row);
+
+			ArrayList<String> rowArray = new ArrayList<String>();
+			int j = 0;
+			while (m2.find()) {
+				id = m2.group();
+				id = id.substring(4, id.length() - 5);
+				rowArray.add(id);
+				j++;
+			}
+			array.add(rowArray);
+			i++;
+		}
+		return array;
 	}
 
 	//Creating new Https client
