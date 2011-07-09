@@ -22,16 +22,7 @@ public class DBInterface {
 		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
 		nvp.add(new BasicNameValuePair("bid", "lam002"));
 		nvp.add(new BasicNameValuePair("bid2", "iam001"));
-		ArrayList<ArrayList<String>> ans = this.communication.post("test.php", nvp);
-		String test = "";
-		for(int i = 0; i < ans.size(); i++){
-			for(int j = 0; j < ans.get(i).size(); j++){
-				test+= ans.get(i).get(j) + ", ";
-			}
-			test+="\n-------------------------\n";
-		}
-		System.out.println(test);
-
+		this.communication.post("test.php", nvp);
 	}
 
 	public ArrayList<ArrayList<String>> listAllGroups(){
@@ -152,8 +143,54 @@ public class DBInterface {
 		return this.communication.post("insert.php", nvp);
 	}
 
-	public boolean logOut(){
+	public boolean updateUser(String uid, String lname, String fname, String bid, String password, String salt, String status, String email){
+		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
+		nvp.add(new BasicNameValuePair("uid", uid));
+		nvp.add(new BasicNameValuePair("table", "users"));
+		int i = 1;
+		if(lname!=null){
+			nvp.add(new BasicNameValuePair("field"+i, "Etternavn"));
+			nvp.add(new BasicNameValuePair("value"+i, lname));
+			i++;
+		}
+		if(fname!=null){
+			nvp.add(new BasicNameValuePair("field"+i, "Fornavn"));
+			nvp.add(new BasicNameValuePair("value"+i, fname));
+			i++;
+		}
+		if(bid!=null){
+			nvp.add(new BasicNameValuePair("field"+i, "BID"));
+			nvp.add(new BasicNameValuePair("value"+i, bid));
+			i++;
+		}
+		if(password!=null && salt!=null){
+			nvp.add(new BasicNameValuePair("field"+i, "passord"));
+			nvp.add(new BasicNameValuePair("value"+i, password));
+			i++;
+			nvp.add(new BasicNameValuePair("field"+i, "salt"));
+			nvp.add(new BasicNameValuePair("value"+i, salt));
+			i++;
+		}
+		if(status!=null){
+			nvp.add(new BasicNameValuePair("field"+i, "status"));
+			nvp.add(new BasicNameValuePair("value"+i, status));
+			i++;
+		}
+		if(email!=null){
+			nvp.add(new BasicNameValuePair("field"+i, "epost"));
+			nvp.add(new BasicNameValuePair("value"+i, email));
+			i++;
+		}
+		if(i>1){
+			this.communication.post("update.php", nvp);
+			return true;
+		}
+		return false;
+	}
 
+	public boolean logOut(){
+		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
+		this.communication.post("logout.php", nvp);
 		return true;
 	}
 
@@ -169,6 +206,8 @@ public class DBInterface {
 		//dbi.listCompleteMessagesByType("Forvaltning");
 		//dbi.listCompleteMessageByID("1");
 		//dbi.sendMessage("12345678", "87654321", "Hello World!");
+		//dbi.updateUser("178", "Amdal", null, null, null, null, "bruker", "");
+		//dbi.logOut();
 	}
 
 }

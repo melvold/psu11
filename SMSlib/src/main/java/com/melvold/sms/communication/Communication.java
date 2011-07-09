@@ -10,14 +10,13 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.naming.AuthenticationException;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.ClientProtocolException;
@@ -33,6 +32,10 @@ import org.apache.http.protocol.BasicHttpContext;
 
 import com.melvold.sms.crypto.CryptoUtils;
 import com.melvold.sms.macros.Macros;
+
+import de.rtner.misc.BinTools;
+
+
 
 
 public class Communication {
@@ -53,6 +56,8 @@ public class Communication {
 		try {
 			if(!this.authenticate(bid, password)) {
 				throw new AuthenticationException();
+			}else{
+				this.authenticated = true;
 			}
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
@@ -72,13 +77,36 @@ public class Communication {
 	private boolean authenticate(String bid, String password) throws ClientProtocolException, IOException, NoSuchAlgorithmException {
 		HttpClient client = getNewSecureAuthHttpClient();
 		HttpPost post = new HttpPost("/" + Macros.FOLDER + "/login.php");
+		HttpResponse response = null;
 
 		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
+
 		nvp.add(new BasicNameValuePair("bid", bid));
-		nvp.add(new BasicNameValuePair("password", CryptoUtils.md5(password)));
+		nvp.add(new BasicNameValuePair("salt", "salt"));
 		post.setEntity(new UrlEncodedFormEntity(nvp));
 
-		HttpResponse response = null;
+		response = client.execute(this.getHttpHost(), post, getAuthCacheContext());
+		HttpEntity entity = response.getEntity();
+		InputStream is = entity.getContent();
+
+		String result = responseToString(is);
+		//System.out.println(result);
+		ArrayList<ArrayList<String>> array = stringToArray(result);
+		byte[] salt = new byte[16];
+		if(!array.isEmpty()){
+			salt = BinTools.hex2bin(array.get(0).get(0));
+			this.sessionId = response.getFirstHeader("Set-Cookie").getValue();
+		}else{
+			return false;
+		}
+		nvp.clear();
+		String key = CryptoUtils.generatePBKDF2Key(salt, CryptoUtils.md5(password));
+
+		nvp.add(new BasicNameValuePair("bid", bid));
+		nvp.add(new BasicNameValuePair("password", key));
+		post.setEntity(new UrlEncodedFormEntity(nvp));
+
+		response = null;
 		try {
 			response = client.execute(this.getHttpHost(), post, getAuthCacheContext());
 			//			System.out.println("\nAuthentication SERVER:");
@@ -86,15 +114,12 @@ public class Communication {
 			//				System.out.println(h.getName() + " " + h.getValue());
 			//			}
 
-			HttpEntity entity = response.getEntity();
-			InputStream is = entity.getContent();
+			entity = response.getEntity();
+			is = entity.getContent();
 
-			String result = responseToString(is);
-			System.out.println(result);
-			//JSONArray jArray = new JSONArray(result);
+			result = responseToString(is);
+			//System.out.println(result);
 
-			this.sessionId = response.getFirstHeader("Set-Cookie").getValue();
-			this.authenticated = true;
 			return response.getStatusLine().getStatusCode() == 200;
 
 		} catch (ClientProtocolException e) {
@@ -114,24 +139,14 @@ public class Communication {
 		try {
 			post.setEntity(new UrlEncodedFormEntity(nvp));
 			post.addHeader("Cookie", getSessionId());
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
-			HttpResponse response = client.execute(this.getHttpHost(), post, getAuthCacheContext());
 
-			//			System.out.println("\nPOST SERVER:");
-			//			for(Header h : response.getAllHeaders()) {
-			//				System.out.println(h.getName() + " " + h.getValue());
-			//			}
-			//			System.out.println(response.getStatusLine().getStatusCode());
+			HttpResponse response = client.execute(this.getHttpHost(), post, getAuthCacheContext());
 
 			HttpEntity entity = response.getEntity();
 			InputStream is = entity.getContent();
 
 			String result = responseToString(is);
-			System.out.println(result);
+			//System.out.println(result);
 			ArrayList<ArrayList<String>> array = stringToArray(result);
 			String test = "";
 			for(int i = 0; i < array.size(); i++){
@@ -140,7 +155,9 @@ public class Communication {
 				}
 				test+="\n-------------------------\n";
 			}
-			System.out.println(test);
+			if(test!=""){
+				System.out.println(test);
+			}
 
 			return array;
 
@@ -157,7 +174,7 @@ public class Communication {
 
 
 	private static String responseToString(InputStream is) throws IOException{
-		BufferedReader br = new BufferedReader(new InputStreamReader(is,"ISO8859-1"));//TODO: UTF8?
+		BufferedReader br = new BufferedReader(new InputStreamReader(is,"ISO8859-1"));
 		StringBuilder sb = new StringBuilder();
 		String line = null;
 		while ((line = br.readLine()) != null) {

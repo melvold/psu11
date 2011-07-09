@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="4px">
+   <TextView android:text="BID:"
+android:id="@+id/login_tv_bid"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content">
+</TextView>
+   <EditText
+android:id="@+id/login_et_bid"
+android:layout_width="fill_parent"
+android:layout_height="35dp"
+android:background="@android:drawable/editbox_background"
+android:textSize="7pt"
+android:singleLine="true"
+android:maxLength="10"/>
+   <TextView android:text="Passord:"
+android:id="@+id/login_tv_password"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content">
+</TextView>
+<EditText
+android:id="@+id/login_et_password"
+android:password="true"
+android:layout_width="fill_parent"
+android:layout_height="35dp"
+android:background="@android:drawable/editbox_background"
+android:textSize="7pt"
+android:singleLine="true"
+android:maxLength="30"/>
+<LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="right">
+<Button android:id="@+id/login_cancel"
+android:layout_width="35pt"
+android:layout_height="wrap_content"
+android:text="Cancel"/>
+<Button android:id="@+id/login_ok"
+android:layout_width="35pt"
+android:layout_height="wrap_content"
+android:text="Ok"/>
+</LinearLayout>
+</LinearLayout>
