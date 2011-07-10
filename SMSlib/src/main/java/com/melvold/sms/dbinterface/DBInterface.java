@@ -7,6 +7,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.melvold.sms.communication.Communication;
 
+
 public class DBInterface {
 
 	public Byte salt;
