@@ -14,6 +14,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.AuthenticationException;
@@ -28,6 +29,9 @@ import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
 
 import com.melvold.sms.crypto.CryptoUtils;
@@ -58,6 +62,7 @@ public class Communication {
 				throw new AuthenticationException();
 			}else{
 				this.authenticated = true;
+				System.out.println("++++++++++AUTHENTICATED");
 			}
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
@@ -75,8 +80,15 @@ public class Communication {
 	}
 
 	private boolean authenticate(String bid, String password) throws ClientProtocolException, IOException, NoSuchAlgorithmException {
-		HttpClient client = getNewSecureAuthHttpClient();
+		long t = System.currentTimeMillis();
+		System.out.println("0 :++++++++++STARTING AUTHENTICATE");
+		
+		HttpParams params = new BasicHttpParams();
+		params.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+		HttpClient client = getNewSecureAuthHttpClient(params);
+		
 		HttpPost post = new HttpPost("/" + Macros.FOLDER + "/login.php");
+		
 		HttpResponse response = null;
 
 		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
@@ -84,30 +96,35 @@ public class Communication {
 		nvp.add(new BasicNameValuePair("bid", bid));
 		nvp.add(new BasicNameValuePair("salt", "salt"));
 		post.setEntity(new UrlEncodedFormEntity(nvp));
-
+		System.out.println(System.currentTimeMillis() - t+": "+"++++++++++GETTING SALT");
 		response = client.execute(this.getHttpHost(), post, getAuthCacheContext());
+		System.out.println("+++++++++EXECUTE DONE");
 		HttpEntity entity = response.getEntity();
 		InputStream is = entity.getContent();
-
+	
 		String result = responseToString(is);
-		//System.out.println(result);
+		System.out.println("++++++++++"+result);
 		ArrayList<ArrayList<String>> array = stringToArray(result);
 		byte[] salt = new byte[16];
 		if(!array.isEmpty()){
 			salt = BinTools.hex2bin(array.get(0).get(0));
+			System.out.println(System.currentTimeMillis() - t+": "+"++++++++++GOT SALT");
 			this.sessionId = response.getFirstHeader("Set-Cookie").getValue();
 		}else{
 			return false;
 		}
 		nvp.clear();
+		System.out.println(System.currentTimeMillis() - t+": "+"++++++++++GENERATING KEY");
 		String key = CryptoUtils.generatePBKDF2Key(salt, CryptoUtils.md5(password));
-
+		System.out.println(System.currentTimeMillis() - t+": "+"++++++++++KEY GENERATED");
 		nvp.add(new BasicNameValuePair("bid", bid));
 		nvp.add(new BasicNameValuePair("password", key));
 		post.setEntity(new UrlEncodedFormEntity(nvp));
+		post.addHeader("Cookie", getSessionId());
 
 		response = null;
 		try {
+			System.out.println(System.currentTimeMillis() - t+": "+"++++++++++SENDING KEY");
 			response = client.execute(this.getHttpHost(), post, getAuthCacheContext());
 			//			System.out.println("\nAuthentication SERVER:");
 			//			for(Header h : response.getAllHeaders()) {
@@ -118,9 +135,17 @@ public class Communication {
 			is = entity.getContent();
 
 			result = responseToString(is);
+			if(stringToArray(result).size() > 0){
+				System.out.println(System.currentTimeMillis() - t+": "+"++++++++++GOT OK RESULT CODE");
+				return true;
+			}else{
+				System.out.println(System.currentTimeMillis() - t+": "+"++++++++++GOT BAD RESULT CODE");
+				return false;
+			}
+				
 			//System.out.println(result);
-
-			return response.getStatusLine().getStatusCode() == 200;
+			
+			//return response.getStatusLine().getStatusCode() == 200;
 
 		} catch (ClientProtocolException e) {
 			return false;
@@ -133,7 +158,11 @@ public class Communication {
 		if(!this.authenticated) {
 			return null;
 		}
-		HttpClient client = getNewSecureAuthHttpClient();
+		
+		HttpParams params = new BasicHttpParams();
+		params.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+		HttpClient client = getNewSecureAuthHttpClient(params);
+		
 		HttpPost post = new HttpPost("/" + Macros.FOLDER + "/" + script);
 
 		try {
@@ -212,8 +241,8 @@ public class Communication {
 	}
 
 	//Creating new Https client
-	private SecureHttpClient getNewSecureAuthHttpClient() {
-		SecureHttpClient client = new SecureHttpClient();
+	private SecureHttpClient getNewSecureAuthHttpClient(HttpParams params) {
+		SecureHttpClient client = new SecureHttpClient(params);
 		addBasicAuth(client);
 
 		HttpRequestInterceptor preemptiveAuth = new HttpRequestProcesser();
@@ -225,7 +254,7 @@ public class Communication {
 	//Adding basic authentication credentials
 	private void addBasicAuth(DefaultHttpClient client) {
 		client.getCredentialsProvider().setCredentials(new AuthScope(this.getHost(), this.getPort()),
-				new UsernamePasswordCredentials("username", null));
+				new UsernamePasswordCredentials("Eivind", ""));
 		return;
 	}
 
@@ -254,6 +283,10 @@ public class Communication {
 
 	public String getSessionId(){
 		return this.sessionId;
+	}
+	
+	public boolean isAuthenticated(){
+		return this.authenticated;
 	}
 
 }

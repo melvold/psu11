@@ -3,9 +3,32 @@
 android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+<TextView 
+	android:id="@+id/tv_empty"
+	android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+</TextView>
+<ImageView
+android:src="@drawable/logo"
+android:adjustViewBounds="true"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:scaleType="centerInside"/>
+<TextView 
+	android:id="@+id/tv_empty"
+	android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+</TextView>
 <Button
-     android:id="@+id/menu_b"
+     android:id="@+id/menu_send"
      android:layout_width="fill_parent"
      android:layout_height="wrap_content"
-     android:text="MENU"/>
+     android:text="Send melding"/>
+<Button
+     android:id="@+id/menu_show_groups"
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content"
+     android:text="Vis grupper"/>
 </LinearLayout>

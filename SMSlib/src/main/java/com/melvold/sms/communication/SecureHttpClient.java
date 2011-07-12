@@ -13,10 +13,11 @@ import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.SingleClientConnManager;
+import org.apache.http.params.HttpParams;
 
 public class SecureHttpClient extends DefaultHttpClient {
 	// TODO: At the time this needs to be the correct certificate of the server
-	public final String createCert = "-----BEGIN CERTIFICATE-----\n"
+/*	public final String createCert = "-----BEGIN CERTIFICATE-----\n"
 		+ "MIIC5jCCAk+gAwIBAgIBADANBgkqhkiG9w0BAQQFADBcMQswCQYDVQQGEwJERTEP\n"
 		+ "MA0GA1UECBMGQmVybGluMQ8wDQYDVQQHEwZCZXJsaW4xFzAVBgNVBAoTDkFwYWNo\n"
 		+ "ZSBGcmllbmRzMRIwEAYDVQQDEwlsb2NhbGhvc3QwHhcNMDQxMDAxMDkxMDMwWhcN\n"
@@ -33,10 +34,32 @@ public class SecureHttpClient extends DefaultHttpClient {
 		+ "p8J2SJ84I7Fp6UVfnpnbkdE2SBLFRKccSYZpoX85J2Z7qmfaQ35p/ZJySLuOQGv/\n"
 		+ "IHlXFTt9VWT8meCpubcFl/mI701KBGhAX0DwD5OmkiLk3yGOREhy4Q8ZI+Eg75k7\n"
 		+ "WF65KAis5duvvVevPR1CwBk7H9CDe8czwrc=\n"
+		+ "-----END CERTIFICATE-----\n";*/
+	
+	public final String createCert = "-----BEGIN CERTIFICATE-----\n"
+		+ "MIICtzCCAiACCQDoSKpjR8AX6TANBgkqhkiG9w0BAQUFADCBnzELMAkGA1UEBhMC\n"
+		+ "Tk8xEjAQBgNVBAgTCVRyb25kaGVpbTEPMA0GA1UEBxMGTWFsdmlrMRQwEgYDVQQK\n"
+		+ "EwtNZWx2b2xkIEluYzEUMBIGA1UECxMLZGV2ZWxvcG1lbnQxFjAUBgNVBAMTDTE5\n"
+		+ "Mi4xNjguMC4xMjcxJzAlBgkqhkiG9w0BCQEWGGVpdmluZC5tZWx2b2xkQGdtYWls\n"
+		+ "LmNvbTAeFw0xMTA3MTExMDM5NDJaFw0xMjA3MTAxMDM5NDJaMIGfMQswCQYDVQQG\n"
+		+ "EwJOTzESMBAGA1UECBMJVHJvbmRoZWltMQ8wDQYDVQQHEwZNYWx2aWsxFDASBgNV\n"
+		+ "BAoTC01lbHZvbGQgSW5jMRQwEgYDVQQLEwtkZXZlbG9wbWVudDEWMBQGA1UEAxMN\n"
+		+ "MTkyLjE2OC4wLjEyNzEnMCUGCSqGSIb3DQEJARYYZWl2aW5kLm1lbHZvbGRAZ21h\n"
+		+ "aWwuY29tMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC+wOniSb/7CUTv6aUK\n"
+		+ "1dDK3uFfDeNfga7JWzt91vHKiW6u+MZ9tV+Cx6luFu5oRNoM9S8hdfzJ2tRdwp1u\n"
+		+ "54uXRphpSyF/mkeRcAxQL2M6pdzUkRUOFAr+gglA0JPSVeMmWAyg5CKl48XpbwRd\n"
+		+ "PO5B9aujbmjb0A4K6KxFL1XUOQIDAQABMA0GCSqGSIb3DQEBBQUAA4GBABo8TcGy\n"
+		+ "l5PbjDJBZ0TkNVcLy+Jk28ZEb8FteeeGLo7Ea2VqIRdHuDSH4B8bw4bvULTb1seA\n"
+		+ "uVaFvLq/8bjnzGQg9rGC/cIOmEJYNdUzUUHhrEYnGU3HDA/nRrCMSHClwIlF41q0\n"
+		+ "940qDHTbDOUgILgyCx0Hp0zTl3D1OykNcfz2\n"
 		+ "-----END CERTIFICATE-----\n";
 
 	public SecureHttpClient() {
 		super();
+	}
+	
+	public SecureHttpClient(HttpParams params) {
+		super(params);
 	}
 
 	//Create connection manager supporting the https scheme
@@ -75,6 +98,7 @@ public class SecureHttpClient extends DefaultHttpClient {
 			cf = CertificateFactory.getInstance("X.509");
 			cert = (X509Certificate) cf.generateCertificate(is);
 		} catch (CertificateException e) {
+			//System.out.println("++++++++++++++COULD NOT GENERATE CERT");
 			e.printStackTrace();
 		}
 		return cert;

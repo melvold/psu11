@@ -1,6 +1,7 @@
-package com.melvold.sms.client;
+package com.melvold.sms.client.activities;
 
 import com.melvold.projects.sms.R;
+import com.melvold.sms.dbinterface.DBInterface;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,23 +9,28 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
 public class MainMenuActivity extends Activity {
 	
-	public boolean loggedIn;
+	public static DBInterface dbi;
 	public Context con;
 	
 	private boolean hasConnection;
-	private Button bMenu;
+	private Button bSend;
+	private Button bGroups;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		con = getApplicationContext();
 		hasConnection = haveNetworkConnection();
+		
 		if(!hasConnection){
 			Intent intent = new Intent();
 			intent.setClass(MainMenuActivity.this, ExitMessageActivity.class);
@@ -32,21 +38,28 @@ public class MainMenuActivity extends Activity {
 			intent.putExtra("IMAGE", R.drawable.nonetwork);
 			startActivityForResult(intent, Macros.EXITM);
 			
-		}else if(!loggedIn){
+		}else if(dbi == null){
 			Intent intent = new Intent();
 			intent.setClass(MainMenuActivity.this, LoginActivity.class);
 			startActivityForResult(intent, Macros.LOGIN);
 		}else{
-			setContentBasedOnLayout();
+/*			setContentBasedOnLayout();
 			
-			bMenu = (Button)findViewById(R.id.menu_b);
-			
-			bMenu.setOnClickListener(new View.OnClickListener() {
+			bSend = (Button)findViewById(R.id.menu_send);
+			bGroups = (Button)findViewById(R.id.menu_show_groups);
+			bSend.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 
 				}
 			});
+			bGroups.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+
+				}
+			});*/
+			finish();
 		}
 	}
 	
@@ -59,8 +72,29 @@ public class MainMenuActivity extends Activity {
 					finish();
 				}
 				case Macros.LOGIN:{
-					if(!loggedIn){
+					if(dbi == null){
 						finish();
+					}else{
+						setContentBasedOnLayout();
+						
+						bSend = (Button)findViewById(R.id.menu_send);
+						bGroups = (Button)findViewById(R.id.menu_show_groups);
+						bSend.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								Intent intent = new Intent();
+								intent.setClass(MainMenuActivity.this, SendMenuActivity.class);
+								startActivity(intent);
+							}
+						});
+						bGroups.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								Intent intent = new Intent();
+								intent.setClass(MainMenuActivity.this, ShowGroupsActivity.class);
+								startActivity(intent);
+							}
+						});
 					}
 				}
 			}
@@ -68,6 +102,25 @@ public class MainMenuActivity extends Activity {
 		if (resultCode == RESULT_CANCELED) {
 			finish();
 		}
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    case R.id.login_menu_exit:
+	    	setResult(RESULT_OK);
+	        finish();
+	        return true;
+	    default:
+	        return super.onOptionsItemSelected(item);
+	    }
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		    MenuInflater inflater = getMenuInflater();
+		    inflater.inflate(R.layout.login_menu, menu);
+		    return true;
 	}
 	
 	private boolean haveNetworkConnection(){

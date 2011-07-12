@@ -1,4 +1,4 @@
-package com.melvold.sms.client;
+package com.melvold.sms.client.activities;
 
 import com.melvold.projects.sms.R;
 

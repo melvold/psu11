@@ -12,7 +12,7 @@ public class DBInterface {
 
 	public Byte salt;
 	public Communication communication;
-
+	
 	public DBInterface(String host, String bid, String password){
 		this.salt = null;
 		this.communication = null;
@@ -58,9 +58,12 @@ public class DBInterface {
 		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
 		nvp.add(new BasicNameValuePair("select1", "Fornavn"));
 		nvp.add(new BasicNameValuePair("select2", "Etternavn"));
+		nvp.add(new BasicNameValuePair("select3", "tlf"));
+		nvp.add(new BasicNameValuePair("select4", "type"));
 		nvp.add(new BasicNameValuePair("table1", "users"));
 		nvp.add(new BasicNameValuePair("table2", "g_kobling"));
 		nvp.add(new BasicNameValuePair("table3", "grupper"));
+		nvp.add(new BasicNameValuePair("table4", "tlf_nr"));
 		nvp.add(new BasicNameValuePair("users/group", groupID));
 		return this.communication.post("list.php", nvp);
 	}
@@ -193,6 +196,10 @@ public class DBInterface {
 		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
 		this.communication.post("logout.php", nvp);
 		return true;
+	}
+	
+	public boolean isConnected(){
+		return this.communication.isAuthenticated();
 	}
 
 	public static void main(String[] args){
