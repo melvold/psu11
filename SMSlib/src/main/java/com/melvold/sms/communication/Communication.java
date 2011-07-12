@@ -39,9 +39,6 @@ import com.melvold.sms.macros.Macros;
 
 import de.rtner.misc.BinTools;
 
-
-
-
 public class Communication {
 
 	private String host;
