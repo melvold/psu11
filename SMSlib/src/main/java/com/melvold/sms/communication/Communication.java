@@ -139,7 +139,7 @@ public class Communication {
 				System.out.println(System.currentTimeMillis() - t+": "+"++++++++++GOT BAD RESULT CODE");
 				return false;
 			}
-				
+
 			//System.out.println(result);
 			
 			//return response.getStatusLine().getStatusCode() == 200;
@@ -161,7 +161,7 @@ public class Communication {
 		HttpClient client = getNewSecureAuthHttpClient(params);
 		
 		HttpPost post = new HttpPost("/" + Macros.FOLDER + "/" + script);
-
+		System.out.println("+++++++++++++SENDING POST!");
 		try {
 			post.setEntity(new UrlEncodedFormEntity(nvp));
 			post.addHeader("Cookie", getSessionId());
@@ -172,7 +172,7 @@ public class Communication {
 			InputStream is = entity.getContent();
 
 			String result = responseToString(is);
-			//System.out.println(result);
+			System.out.println(result);
 			ArrayList<ArrayList<String>> array = stringToArray(result);
 			String test = "";
 			for(int i = 0; i < array.size(); i++){

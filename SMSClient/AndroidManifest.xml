@@ -18,6 +18,7 @@
 	<activity android:name="com.melvold.sms.client.activities.SendMenuActivity" android:label="@string/app_name" ></activity>
 	<activity android:name="com.melvold.sms.client.activities.ShowGroupsActivity" android:label="@string/app_name" ></activity>
     <activity android:name="com.melvold.sms.client.activities.ShowMembersActivity" android:label="@string/app_name" ></activity>
+    <activity android:name="com.melvold.sms.client.activities.SendNumberActivity" android:label="@string/app_name" ></activity>
     </application>
     
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>

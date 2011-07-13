@@ -2,6 +2,7 @@ package com.melvold.sms.client.activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,7 +32,9 @@ public class SendMenuActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				
+				Intent intent = new Intent();
+				intent.setClass(SendMenuActivity.this, SendNumberActivity.class);
+				startActivity(intent);
 			}
 		});
 		

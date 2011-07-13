@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+	<TextView
+		android:id="@+id/tv_tlf_number"
+		android:layout_width="fill_parent"
+	    android:layout_height="wrap_content">
+	</TextView>
+	<EditText 
+		android:id="@+id/et_tlf_number"
+		android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+	</EditText>
+	<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent">
+		<TextView
+			android:id="@+id/tv_tlf_message"
+			android:layout_width="fill_parent"
+		    android:layout_height="wrap_content">
+		</TextView>
+		<EditText 
+			android:id="@+id/et_tlf_message"
+			android:layout_width="fill_parent"
+       		android:layout_height="wrap_content">
+		</EditText>
+		<Button
+		     android:id="@+id/sendnumber_back"
+		     android:layout_width="fill_parent"
+		     android:layout_height="wrap_content"
+		     android:text="Tilbake"/>
+		<Button
+		     android:id="@+id/sendnumber_send"
+		     android:layout_width="fill_parent"
+		     android:layout_height="wrap_content"
+		     android:text="Send"/>
+	</LinearLayout>
+</LinearLayout>

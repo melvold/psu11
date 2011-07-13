@@ -1,6 +1,7 @@
 package com.melvold.sms.client.activities;
 
 import com.melvold.projects.sms.R;
+import com.melvold.sms.client.utils.Macros;
 import com.melvold.sms.dbinterface.DBInterface;
 
 import android.app.Activity;

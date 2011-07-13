@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.melvold.projects.sms.R;
+import com.melvold.sms.client.utils.Macros;
 import com.melvold.sms.dbinterface.DBInterface;
 
 public class LoginActivity extends Activity{
