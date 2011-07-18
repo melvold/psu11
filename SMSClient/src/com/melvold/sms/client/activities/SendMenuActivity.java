@@ -58,7 +58,9 @@ public class SendMenuActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				
+				Intent intent = new Intent();
+				intent.setClass(SendMenuActivity.this, SendListKnownActivity.class);
+				startActivity(intent);
 			}
 		});
 	}

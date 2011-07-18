@@ -1,7 +1,7 @@
 package com.melvold.sms.client.activities;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +22,8 @@ public class LoginActivity extends Activity{
 	private Button bCancel;
 	private Button bOk;
 	
+	private ProgressDialog progressDialog;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,7 +34,11 @@ public class LoginActivity extends Activity{
 		bOk = (Button) findViewById(R.id.login_ok);
 		tvBid = (TextView) findViewById(R.id.login_et_bid);
 		tvPassword = (TextView) findViewById(R.id.login_et_password);
-
+		
+		this.progressDialog = new ProgressDialog(LoginActivity.this.getApplicationContext());
+		this.progressDialog.setTitle("Title");
+		this.progressDialog.setMessage("Message");
+        
 		bCancel.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -44,6 +50,7 @@ public class LoginActivity extends Activity{
 		bOk.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				ProgressDialog.show(LoginActivity.this, "", "Genererer og godkjenner hemmelig nøkkel...", true);
 				MainMenuActivity.dbi = new DBInterface(Macros.server, tvBid.getText().toString(), tvPassword.getText().toString());
 				if(MainMenuActivity.dbi.isConnected()){
 					setResult(RESULT_OK);
