@@ -1,9 +1,5 @@
 package com.melvold.sms.client.activities;
 
-import com.melvold.projects.sms.R;
-import com.melvold.sms.client.utils.Macros;
-import com.melvold.sms.dbinterface.DBInterface;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+
+import com.melvold.projects.sms.R;
+import com.melvold.sms.client.utils.Macros;
+import com.melvold.sms.dbinterface.DBInterface;
 
 public class MainMenuActivity extends Activity {
 	
@@ -157,5 +157,10 @@ public class MainMenuActivity extends Activity {
 	        	setContentView(R.layout.main);
 	        }            
 	    }
+	}
+	
+	@Override
+	public void onBackPressed(){
+		//dbi.logOut();
 	}
 }
