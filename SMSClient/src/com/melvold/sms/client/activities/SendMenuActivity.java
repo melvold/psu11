@@ -42,7 +42,9 @@ public class SendMenuActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				
+				Intent intent = new Intent();
+				intent.setClass(SendMenuActivity.this, CheckMembersActivity.class);
+				startActivity(intent);
 			}
 		});
 		
@@ -50,7 +52,9 @@ public class SendMenuActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				
+				Intent intent = new Intent();
+				intent.setClass(SendMenuActivity.this, CheckGroupsActivity.class);
+				startActivity(intent);
 			}
 		});
 		

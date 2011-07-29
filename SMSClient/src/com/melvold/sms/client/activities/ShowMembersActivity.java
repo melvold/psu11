@@ -21,12 +21,12 @@ public class ShowMembersActivity extends ListActivity {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		String groupID = getIntent().getStringExtra("GROUP");
+		String group = getIntent().getStringExtra("GROUP");
 		
-		if(!groupID.equals(null)){
-			members = MainMenuActivity.dbi.listMembersInGroup(groupID);
+		if(!group.equals(null)){
+			members = MainMenuActivity.dbi.listMembersInGroup(group);
 		}else{
-			
+			finish();
 		}
 		
 		MemberList ml = new MemberList(members);

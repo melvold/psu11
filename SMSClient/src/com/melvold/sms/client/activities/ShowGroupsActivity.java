@@ -52,10 +52,10 @@ public class ShowGroupsActivity extends ListActivity {
 		int position, long id) {
 			switch (position) {
 				default:
-				String groupID = groups.get(position).get(0);
+				String group = groups.get(position).get(1);
 				Intent intent = new Intent();
 				intent.setClass(ShowGroupsActivity.this, ShowMembersActivity.class);
-				intent.putExtra("GROUP", groupID);
+				intent.putExtra("GROUP", group);
 				startActivity(intent);
 				break;
 				}

@@ -67,6 +67,18 @@ public class DBInterface {
 		nvp.add(new BasicNameValuePair("users/group", groupID));
 		return this.communication.post("list.php", nvp);
 	}
+	
+	public int countMembersInGroup(String groupID){
+		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
+		nvp.add(new BasicNameValuePair("select1", "COUNT(Fornavn)"));
+		nvp.add(new BasicNameValuePair("table1", "users"));
+		nvp.add(new BasicNameValuePair("table2", "g_kobling"));
+		nvp.add(new BasicNameValuePair("table3", "grupper"));
+		nvp.add(new BasicNameValuePair("table4", "tlf_nr"));
+		nvp.add(new BasicNameValuePair("users/group", groupID));
+		ArrayList<ArrayList<String>> res = this.communication.post("list.php", nvp);
+		return Integer.parseInt(res.get(0).get(0));
+	}
 
 	public ArrayList<ArrayList<String>> listReceivedMessages(String maxPerPage, String pageNum){
 		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
@@ -117,6 +129,7 @@ public class DBInterface {
 		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
 		nvp.add(new BasicNameValuePair("select1", "m_id"));
 		nvp.add(new BasicNameValuePair("select2", "name"));
+		nvp.add(new BasicNameValuePair("select3", "message"));
 		nvp.add(new BasicNameValuePair("table1", "messages"));
 		nvp.add(new BasicNameValuePair("messagetype", type));
 		return this.communication.post("list.php", nvp);

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu
+xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+    android:id="@+id/menu_back"
+    android:icon="@drawable/back"
+    android:title="Tilbake" />
+    <item
+    android:id="@+id/menu_check_all"
+    android:icon="@drawable/check"
+    android:title="Velg alle" />
+    <item
+    android:id="@+id/menu_clear_check_all"
+    android:icon="@drawable/cross"
+    android:title="Velg ingen" />
+</menu>

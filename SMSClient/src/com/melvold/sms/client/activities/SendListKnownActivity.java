@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,11 +52,24 @@ public class SendListKnownActivity extends ListActivity {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view,
 		int position, long id) {
+			Intent intent = new Intent();
 			switch (position) {
-				default:
-				
+			case 1:
+				System.out.println("++++POSITION " + position);
+				intent.putExtra("TYPE", "Forvaltning");
+				intent.setClass(SendListKnownActivity.this, ShowMessagesActivity.class);
+				startActivity(intent);
 				break;
-				}
+			case 2:
+				System.out.println("++++POSITION " + position);
+				intent.putExtra("TYPE", "Etterforskning");
+				intent.setClass(SendListKnownActivity.this, ShowMessagesActivity.class);
+				startActivity(intent);
+				break;
+			default:
+				System.out.println("++++POSITION " + position);
+				break;
+			}
 		}
 	});
 	}
