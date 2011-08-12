@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.melvold.projects.sms.R;
+import com.melvold.sms.R;
 
 public class MemberList implements SMSList {
 	
@@ -15,7 +15,6 @@ public class MemberList implements SMSList {
 	
 	public MemberList(ArrayList<ArrayList<String>> members){
 		memberlist = new ArrayList<Map<String,Object>>();
-		List<Map<String,Object>> tmp = new ArrayList<Map<String,Object>>();
 		from = new String[] {"NAME", "TLF", "ICON"};
 		to = new int[] { R.id.member_name, R.id.member_tlf, R.id.member_image};
 		

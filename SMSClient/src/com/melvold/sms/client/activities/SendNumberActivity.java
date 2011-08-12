@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.melvold.projects.sms.R;
+import com.melvold.sms.R;
 import com.melvold.sms.client.utils.Macros;
 import com.melvold.sms.client.utils.smsUtils;
 
@@ -47,7 +47,7 @@ public class SendNumberActivity extends Activity {
 					if(!smsUtils.isPhoneNumber(to)){
 						Toast.makeText(getApplicationContext(), "Ugyldig telefonnummer!", Toast.LENGTH_LONG).show();
 					}else{
-						MainMenuActivity.dbi.sendMessage(Macros.server_number, to, message);
+						MainMenuActivity.dbi.sendMessage(Macros.SERVER_NUMBER, to, message);
 						Toast.makeText(getApplicationContext(), "Melding sendt!", Toast.LENGTH_LONG).show();
 						finish();
 					}

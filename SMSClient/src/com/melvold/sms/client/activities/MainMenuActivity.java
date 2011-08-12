@@ -1,6 +1,7 @@
 package com.melvold.sms.client.activities;
 
 import android.app.Activity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -13,9 +14,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.melvold.projects.sms.R;
+import com.melvold.sms.R;
 import com.melvold.sms.client.utils.Macros;
-import com.melvold.sms.dbinterface.DBInterface;
+import com.melvold.sms.lib.dbinterface.DBInterface;
 
 public class MainMenuActivity extends Activity {
 	

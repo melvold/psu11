@@ -9,7 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.melvold.projects.sms.R;
+import com.melvold.sms.R;
 
 public class SendMenuActivity extends Activity {
 	

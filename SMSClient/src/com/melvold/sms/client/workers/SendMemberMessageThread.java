@@ -41,7 +41,7 @@ public class SendMemberMessageThread extends Thread {
 				Toast.makeText(context, "Sendte ikke til:\n" + person + "\nda personen er registrert feil!", Toast.LENGTH_LONG).show();
 				Toast.makeText(context, "Kontakt administrator for riktig registrering av personen!", Toast.LENGTH_LONG).show();
 			}else{
-				MainMenuActivity.dbi.sendMessage(Macros.server_number, smsUtils.makeInternationalNumber(tmp[1], "47"), message.getText().toString());
+				MainMenuActivity.dbi.sendMessage(Macros.SERVER_NUMBER, smsUtils.makeInternationalNumber(tmp[1], "47"), message.getText().toString());
 	            
 				Message msg = mHandler.obtainMessage();
 	            Bundle b = new Bundle();

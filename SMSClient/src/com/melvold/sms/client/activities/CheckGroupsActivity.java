@@ -2,6 +2,7 @@ package com.melvold.sms.client.activities;
 
 import java.util.ArrayList;
 
+
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
@@ -18,7 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.melvold.projects.sms.R;
+import com.melvold.sms.R;
 import com.melvold.sms.client.lists.GroupCheckList;
 import com.melvold.sms.client.utils.CheckAdapter;
 import com.melvold.sms.client.workers.SendGroupMessageThread;

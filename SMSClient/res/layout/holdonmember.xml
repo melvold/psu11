@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/memberhold">
+        <item android:id="@+id/memberhold_call"
+              android:title="Ring nummer" />
+        <item android:id="@+id/memberhold_copy"
+              android:title="Kopier nummer" />
+    </group>
+</menu>

@@ -1,11 +1,13 @@
-package com.melvold.sms.dbinterface;
+package com.melvold.sms.lib.dbinterface;
 
 import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.melvold.sms.communication.Communication;
+import android.content.Context;
+
+import com.melvold.sms.lib.communication.Communication;
 
 
 public class DBInterface {
@@ -13,10 +15,10 @@ public class DBInterface {
 	public Byte salt;
 	public Communication communication;
 	
-	public DBInterface(String host, String bid, String password){
+	public DBInterface(Context con, String server, String folder, String bid, String password){
 		this.salt = null;
 		this.communication = null;
-		this.communication = new Communication(host, bid, password, 443, "https");
+		this.communication = new Communication(con, server, folder, bid, password);
 	}
 
 	public void testConnection(){
@@ -31,7 +33,7 @@ public class DBInterface {
 		nvp.add(new BasicNameValuePair("select1", "g_id"));
 		nvp.add(new BasicNameValuePair("select2", "g_navn"));
 		nvp.add(new BasicNameValuePair("table1", "grupper"));
-		return this.communication.post("list.php", nvp);
+		return this.communication.get("list.php", nvp);
 	}
 
 	public ArrayList<ArrayList<String>> listAllMembersWithTlf(){
@@ -43,7 +45,7 @@ public class DBInterface {
 		nvp.add(new BasicNameValuePair("table1", "users"));
 		nvp.add(new BasicNameValuePair("table2", "tlf_nr"));
 		nvp.add(new BasicNameValuePair("users/tlf", "u_id"));
-		return this.communication.post("list.php", nvp);
+		return this.communication.get("list.php", nvp);
 	}
 
 	public ArrayList<ArrayList<String>> listAllMembers(){
@@ -51,7 +53,7 @@ public class DBInterface {
 		nvp.add(new BasicNameValuePair("select1", "Fornavn"));
 		nvp.add(new BasicNameValuePair("select2", "Etternavn"));
 		nvp.add(new BasicNameValuePair("table1", "users"));
-		return this.communication.post("list.php", nvp);
+		return this.communication.get("list.php", nvp);
 	}
 
 	public ArrayList<ArrayList<String>> listMembersInGroup(String groupID){
@@ -65,7 +67,7 @@ public class DBInterface {
 		nvp.add(new BasicNameValuePair("table3", "grupper"));
 		nvp.add(new BasicNameValuePair("table4", "tlf_nr"));
 		nvp.add(new BasicNameValuePair("users/group", groupID));
-		return this.communication.post("list.php", nvp);
+		return this.communication.get("list.php", nvp);
 	}
 	
 	public int countMembersInGroup(String groupID){
@@ -76,7 +78,7 @@ public class DBInterface {
 		nvp.add(new BasicNameValuePair("table3", "grupper"));
 		nvp.add(new BasicNameValuePair("table4", "tlf_nr"));
 		nvp.add(new BasicNameValuePair("users/group", groupID));
-		ArrayList<ArrayList<String>> res = this.communication.post("list.php", nvp);
+		ArrayList<ArrayList<String>> res = this.communication.get("list.php", nvp);
 		return Integer.parseInt(res.get(0).get(0));
 	}
 
@@ -98,7 +100,7 @@ public class DBInterface {
 		nvp.add(new BasicNameValuePair("msgs_received", maxPerPage));
 		//Choose pageNum
 		nvp.add(new BasicNameValuePair("page", pageNum));
-		return this.communication.post("list.php", nvp);
+		return this.communication.get("list.php", nvp);
 	}
 
 	public ArrayList<ArrayList<String>> listReceivedMessagesByCode(String maxPerPage, String pageNum, String code){
@@ -122,7 +124,7 @@ public class DBInterface {
 		nvp.add(new BasicNameValuePair("msgs_received", maxPerPage));
 		//Choose pageNum
 		nvp.add(new BasicNameValuePair("page", pageNum));
-		return this.communication.post("list.php", nvp);
+		return this.communication.get("list.php", nvp);
 	}
 
 	public ArrayList<ArrayList<String>> listCompleteMessagesByType(String type){
@@ -132,7 +134,7 @@ public class DBInterface {
 		nvp.add(new BasicNameValuePair("select3", "message"));
 		nvp.add(new BasicNameValuePair("table1", "messages"));
 		nvp.add(new BasicNameValuePair("messagetype", type));
-		return this.communication.post("list.php", nvp);
+		return this.communication.get("list.php", nvp);
 	}
 
 	public ArrayList<ArrayList<String>> listCompleteMessageByID(String id){
@@ -141,10 +143,10 @@ public class DBInterface {
 		nvp.add(new BasicNameValuePair("select2", "message"));
 		nvp.add(new BasicNameValuePair("table1", "messages"));
 		nvp.add(new BasicNameValuePair("m_id", id));
-		return this.communication.post("list.php", nvp);
+		return this.communication.get("list.php", nvp);
 	}
 
-	public ArrayList<ArrayList<String>> sendMessage(String from, String to, String message){
+	public boolean sendMessage(String from, String to, String message){
 		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
 		nvp.add(new BasicNameValuePair("field1", "sender"));
 		nvp.add(new BasicNameValuePair("field2", "receiver"));
@@ -199,16 +201,14 @@ public class DBInterface {
 			i++;
 		}
 		if(i>1){
-			this.communication.post("update.php", nvp);
-			return true;
+			return this.communication.post("update.php", nvp);
 		}
 		return false;
 	}
 
 	public boolean logOut(){
 		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
-		this.communication.post("logout.php", nvp);
-		return true;
+		return this.communication.post("logout.php", nvp);
 	}
 	
 	public boolean isConnected(){
@@ -216,7 +216,7 @@ public class DBInterface {
 	}
 
 	public static void main(String[] args){
-		DBInterface dbi = new DBInterface("localhost", "lam002", "mikkel96");
+		//DBInterface dbi = new DBInterface("localhost", "lam002", "mikkel96");
 		//dbi.testConnection();
 		//dbi.listAllGroups();
 		//dbi.listAllMembersWithTlf();

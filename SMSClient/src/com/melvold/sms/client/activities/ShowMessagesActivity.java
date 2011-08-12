@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import com.melvold.projects.sms.R;
+import com.melvold.sms.R;
 import com.melvold.sms.client.lists.MessageList;
 
 public class ShowMessagesActivity extends ListActivity {

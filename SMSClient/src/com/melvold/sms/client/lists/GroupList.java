@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.melvold.projects.sms.R;
+import com.melvold.sms.R;
 
 public class GroupList implements SMSList{
 	
@@ -15,7 +15,6 @@ public class GroupList implements SMSList{
 
 	public GroupList(ArrayList<ArrayList<String>> groups){
 		grouplist = new ArrayList<Map<String,Object>>();
-		List<Map<String,Object>> tmp = new ArrayList<Map<String,Object>>();
 		from = new String[] {"TEXT", "ICON"};
 		to = new int[] { R.id.group_name, R.id.group_image};
 		

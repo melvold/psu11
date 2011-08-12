@@ -1,4 +1,4 @@
-package com.melvold.sms.crypto;
+package com.melvold.sms.lib.crypto;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

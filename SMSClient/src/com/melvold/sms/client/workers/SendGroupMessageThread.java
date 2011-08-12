@@ -45,7 +45,7 @@ public class SendGroupMessageThread extends Thread {
 					Toast.makeText(context, "Sendte ikke til:\n" + person + "\nda personen er registrert feil!", Toast.LENGTH_LONG).show();
 					Toast.makeText(context, "Kontakt administrator for riktig registrering av personen!", Toast.LENGTH_LONG).show();
 				}else{
-					MainMenuActivity.dbi.sendMessage(Macros.server_number, smsUtils.makeInternationalNumber(person_values[1], "47"), message.getText().toString());
+					MainMenuActivity.dbi.sendMessage(Macros.SERVER_NUMBER, smsUtils.makeInternationalNumber(person_values[1], "47"), message.getText().toString());
 		            // Send message (with current value of  total as data) to Handler on UI thread
 		            // so that it can update the progress bar.
 		            Message msg = mHandler.obtainMessage();

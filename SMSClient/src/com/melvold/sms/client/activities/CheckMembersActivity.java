@@ -19,7 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.melvold.projects.sms.R;
+import com.melvold.sms.R;
 import com.melvold.sms.client.lists.MemberCheckList;
 import com.melvold.sms.client.utils.CheckAdapter;
 import com.melvold.sms.client.workers.SendMemberMessageThread;

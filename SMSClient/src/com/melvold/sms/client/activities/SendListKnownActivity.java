@@ -15,7 +15,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.melvold.projects.sms.R;
+import com.melvold.sms.R;
 
 public class SendListKnownActivity extends ListActivity {
 

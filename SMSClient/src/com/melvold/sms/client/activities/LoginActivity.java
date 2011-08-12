@@ -1,6 +1,7 @@
 package com.melvold.sms.client.activities;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,9 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.melvold.projects.sms.R;
-import com.melvold.sms.client.utils.Macros;
-import com.melvold.sms.dbinterface.DBInterface;
+import com.melvold.sms.R;
+import com.melvold.sms.client.workers.LoginThread;
 
 public class LoginActivity extends Activity{
 	
@@ -22,7 +22,8 @@ public class LoginActivity extends Activity{
 	private Button bCancel;
 	private Button bOk;
 	
-	private ProgressDialog progressDialog;
+	private ProgressDialog progDialog;
+	private LoginThread progThread;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,10 +35,6 @@ public class LoginActivity extends Activity{
 		bOk = (Button) findViewById(R.id.login_ok);
 		tvBid = (TextView) findViewById(R.id.login_et_bid);
 		tvPassword = (TextView) findViewById(R.id.login_et_password);
-		
-		this.progressDialog = new ProgressDialog(LoginActivity.this.getApplicationContext());
-		this.progressDialog.setTitle("Title");
-		this.progressDialog.setMessage("Message");
         
 		bCancel.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -50,8 +47,16 @@ public class LoginActivity extends Activity{
 		bOk.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ProgressDialog.show(LoginActivity.this, "", "Genererer og godkjenner hemmelig nøkkel...", true);
-				MainMenuActivity.dbi = new DBInterface(Macros.server, tvBid.getText().toString(), tvPassword.getText().toString());
+				showDialog(0);
+				System.out.println("+++++PROGDIALOG STARTED!");
+	            progThread = new LoginThread(getApplicationContext(), tvBid.getText().toString(), tvPassword.getText().toString());
+	            progThread.start();
+				try {
+					System.out.println("+++++++WAITING FOR THREAD TO FINISH WORK");
+					progThread.join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				if(MainMenuActivity.dbi.isConnected()){
 					setResult(RESULT_OK);
 					finish();
@@ -84,5 +89,17 @@ public class LoginActivity extends Activity{
 		    inflater.inflate(R.layout.login_menu, menu);
 		    return true;
 	}
+	
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch(id) {
+        default:
+            progDialog = new ProgressDialog(this);
+            progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progDialog.setMessage("Authentiserer bruker...");
+            progDialog.show();
+            return progDialog;
+        }
+    }
 
 }

@@ -15,7 +15,7 @@ import android.widget.CheckBox;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
-import com.melvold.projects.sms.R;
+import com.melvold.sms.R;
 
 public class CheckAdapter extends ArrayAdapter<String> implements OnClickListener, SectionIndexer{
 
