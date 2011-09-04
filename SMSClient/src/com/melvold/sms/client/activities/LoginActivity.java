@@ -8,8 +8,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.melvold.sms.R;
@@ -17,10 +20,10 @@ import com.melvold.sms.client.workers.LoginThread;
 
 public class LoginActivity extends Activity{
 	
-	private TextView tvBid;
-	private TextView tvPassword;
 	private Button bCancel;
 	private Button bOk;
+	private EditText etBid;
+	private EditText etPassword;
 	
 	private ProgressDialog progDialog;
 	private LoginThread progThread;
@@ -33,11 +36,17 @@ public class LoginActivity extends Activity{
 			
 		bCancel = (Button) findViewById(R.id.login_cancel);
 		bOk = (Button) findViewById(R.id.login_ok);
-		tvBid = (TextView) findViewById(R.id.login_et_bid);
-		tvPassword = (TextView) findViewById(R.id.login_et_password);
+		
+/*		LinearLayout ll = (LinearLayout)findViewById(R.id.testing);
+		LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getApplicationContext(), R.anim.fade);
+		ll.setLayoutAnimation(controller);*/
+		
+		
+        etBid = (EditText)findViewById(R.id.login_et_bid);
+        etPassword = (EditText)findViewById(R.id.login_et_password);
         
 		bCancel.setOnClickListener(new View.OnClickListener() {
-			@Override
+			
 			public void onClick(View v) {
 				setResult(RESULT_OK);
 				finish();
@@ -45,11 +54,11 @@ public class LoginActivity extends Activity{
 		});
 
 		bOk.setOnClickListener(new View.OnClickListener() {
-			@Override
+			
 			public void onClick(View v) {
 				showDialog(0);
 				System.out.println("+++++PROGDIALOG STARTED!");
-	            progThread = new LoginThread(getApplicationContext(), tvBid.getText().toString(), tvPassword.getText().toString());
+	            progThread = new LoginThread(getApplicationContext(), etBid.getText().toString(), etPassword.getText().toString());
 	            progThread.start();
 				try {
 					System.out.println("+++++++WAITING FOR THREAD TO FINISH WORK");
@@ -57,7 +66,7 @@ public class LoginActivity extends Activity{
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				if(MainMenuActivity.dbi.isConnected()){
+				if(MainMenuActivity.dbi.getCommunication().isAuthenticated()){
 					setResult(RESULT_OK);
 					finish();
 				}else{

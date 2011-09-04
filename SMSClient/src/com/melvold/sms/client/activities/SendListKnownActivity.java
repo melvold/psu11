@@ -49,7 +49,7 @@ public class SendListKnownActivity extends ListActivity {
 		tv_header.setText("Velg kategori");
 		
 		lv.setOnItemClickListener(new OnItemClickListener() {
-		@Override
+		
 		public void onItemClick(AdapterView<?> parent, View view,
 		int position, long id) {
 			Intent intent = new Intent();

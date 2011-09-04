@@ -1,6 +1,7 @@
 package com.melvold.sms.lib;
 
 import android.app.Activity;
+
 import android.os.Bundle;
 
 public class LibSMSActivity extends Activity {

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 
 
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -42,6 +43,7 @@ public class Communication {
 	private String folder;
 	private boolean authenticated;
 	private String sessionId;
+	private boolean admin;
 	private HttpClient client;
 
 	public Communication(Context con, String serv, String dir, String bid, String password){
@@ -49,6 +51,7 @@ public class Communication {
 		params.setParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, true);
 		client = new SecureHttpClient(con, params, "password".toCharArray(), "password".toCharArray());
 		sessionId = null;
+		admin = false;
 		server = serv;
 		folder = dir;
 		
@@ -73,7 +76,7 @@ public class Communication {
 		
 		ArrayList<ArrayList<String>> array = get("login.php", nvp);
 		byte[] salt = new byte[16];
-		if(!array.isEmpty()){
+		if(array != null && !array.isEmpty()){
 			salt = BinTools.hex2bin(array.get(0).get(0));
 			System.out.println(System.currentTimeMillis() - t+": "+"GOT SALT");
 		}else{
@@ -86,8 +89,13 @@ public class Communication {
 		nvp.clear();
 		nvp.add(new BasicNameValuePair("bid", bid));
 		nvp.add(new BasicNameValuePair("password", key));
-		
-		if(post("login.php", nvp)){
+		array.clear();
+		array = get("login.php", nvp);
+		if( array != null && array.size() > 0){
+			if(array.get(0).get(1).equalsIgnoreCase("admin")){
+				admin = true;
+				System.out.println("IS ADMINISTRATOR");
+			}
 			System.out.println(System.currentTimeMillis() - t+": "+"GOT OK RESULT CODE");
 			return true;
 		}else{
@@ -112,23 +120,15 @@ public class Communication {
 		}
 		try {
 			HttpResponse response = client.execute(get);
-			InputStream in = response.getEntity().getContent();
-			char c;
-			String resp = "";
-			while((c = (char)in.read()) != -1){
-				resp+=c;
-			}
-			System.out.println("RECEIVED:  " + resp);
-			
 			if(response.getStatusLine().getStatusCode() == 200){
 				HttpEntity entity = response.getEntity();
 				InputStream is = entity.getContent();
 				String result = responseToString(is);
-				System.out.println(result);
 				
 				if(sessionId==null){
 					this.sessionId = response.getFirstHeader("Set-Cookie").getValue();
 				}
+				System.out.println(result);
 				return stringToArray(result);
 			}
 				
@@ -220,6 +220,13 @@ public class Communication {
 	
 	public boolean isAuthenticated(){
 		return this.authenticated;
+	}
+	
+	public boolean isAdministrator(){
+		return admin;
+	}
+	public void setAdministrator(boolean ad){
+		admin = ad;
 	}
 
 }

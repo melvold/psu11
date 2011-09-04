@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<TextView 
+	android:id="@+id/tv_empty"
+	android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+</TextView>
+<ImageView
+android:src="@drawable/logo"
+android:adjustViewBounds="true"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:scaleType="centerInside"/>
+<TextView 
+	android:id="@+id/tv_empty"
+	android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+</TextView>
+<Button
+     android:id="@+id/adminmenu_members"
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content"
+     android:text="Medlemmer"/>
+<Button
+     android:id="@+id/adminmenu_groups"
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content"
+     android:text="Grupper"/>
+<Button
+     android:id="@+id/adminmenu_admins"
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content"
+     android:text="Administratorer"/>
+<Button
+     android:id="@+id/adminmenu_messages"
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content"
+     android:text="Mottatte meldinger"/>
+</LinearLayout>

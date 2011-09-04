@@ -64,11 +64,13 @@ public class CheckMembersActivity extends ListActivity {
 		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
 		et_message = (EditText)findViewById(R.id.et_send_members);
+		if(getIntent().getStringExtra("SENDMESSAGE") != null){
+			et_message.setText(getIntent().getStringExtra("SENDMESSAGE"));
+		}
 		b_send = (Button)findViewById(R.id.b_send_members);
 		
 		b_send.setOnClickListener(new OnClickListener() {
 			
-			@Override
 			public void onClick(View v) {
 				if(et_message.getText().toString()!=null && !et_message.getText().toString().equals("")){
 					if(ca.getSelectedRows().size() < 1){

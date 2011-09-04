@@ -2,7 +2,6 @@ package com.melvold.sms.client.activities;
 
 import java.util.ArrayList;
 
-
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
@@ -64,11 +63,13 @@ public class CheckGroupsActivity extends ListActivity {
 		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
 		et_message = (EditText)findViewById(R.id.et_send_members);
+		if(getIntent().getStringExtra("SENDMESSAGE") != null){
+			et_message.setText(getIntent().getStringExtra("SENDMESSAGE"));
+		}
 		b_send = (Button)findViewById(R.id.b_send_members);
 		
 		b_send.setOnClickListener(new OnClickListener() {
 			
-			@Override
 			public void onClick(View v) {
 				if(et_message.getText().toString()!=null && !et_message.getText().toString().equals("")){
 					if(ca.getSelectedRows().size() < 1){
@@ -83,6 +84,7 @@ public class CheckGroupsActivity extends ListActivity {
 				}else{
 					Toast.makeText(getApplicationContext(), "Vennligst skriv en melding!", Toast.LENGTH_LONG).show();
 				}
+				
 			}
 		});
 	}

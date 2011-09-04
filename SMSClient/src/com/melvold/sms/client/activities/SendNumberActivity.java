@@ -18,6 +18,8 @@ public class SendNumberActivity extends Activity {
 	
 	private Button bBack;
 	private Button bSend;
+	private EditText etTo;
+	private EditText etMessage;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -26,10 +28,15 @@ public class SendNumberActivity extends Activity {
 		
 		bBack = (Button)findViewById(R.id.sendnumber_back);
 		bSend = (Button)findViewById(R.id.sendnumber_send);
+		etTo = (EditText) findViewById(R.id.et_tlf_number);
+		etMessage = (EditText)findViewById(R.id.et_tlf_message);
+		if(getIntent().getStringExtra("SENDMESSAGE") != null){
+			etMessage.setText(getIntent().getStringExtra("SENDMESSAGE"));
+		}
 		
 		bBack.setOnClickListener(new OnClickListener() {
 			
-			@Override
+			
 			public void onClick(View v) {
 				finish();
 			}
@@ -37,10 +44,8 @@ public class SendNumberActivity extends Activity {
 		
 		bSend.setOnClickListener(new OnClickListener() {
 			
-			@Override
+			
 			public void onClick(View v) {
-				EditText etTo = (EditText) findViewById(R.id.et_tlf_number);
-				EditText etMessage = (EditText)findViewById(R.id.et_tlf_message);
 				String to = etTo.getText().toString();
 				String message = etMessage.getText().toString();
 				if(to !=  null && message!= null && !to.equals("") && !message.equals("")){

@@ -30,7 +30,7 @@ public class ExitMessageActivity extends Activity{
 		toast.setView(layout);
 		toast.show();
         new Thread(new Runnable() {
-            @Override
+       
             public void run() {
                 try {
                     Thread.sleep(3000);

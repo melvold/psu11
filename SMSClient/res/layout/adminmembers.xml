@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<TextView 
+	android:id="@+id/tv_empty"
+	android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+</TextView>
+<ImageView
+android:src="@drawable/logo"
+android:adjustViewBounds="true"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:scaleType="centerInside"/>
+<TextView 
+	android:id="@+id/tv_empty"
+	android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+</TextView>
+<Button
+     android:id="@+id/adminmembers_newmember"
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content"
+     android:text="Nytt medlem"/>
+<Button
+     android:id="@+id/adminmembers_editmember"
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content"
+     android:text="Endre medlem"/>
+</LinearLayout>

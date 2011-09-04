@@ -5,7 +5,7 @@
       android:versionName="1.0">
     <uses-sdk android:minSdkVersion="7" />
 
-    <application android:icon="@drawable/main" android:label="@string/app_name" android:debuggable="true">
+    <application android:icon="@drawable/main" android:label="@string/app_name" android:debuggable="true" android:theme="@android:style/Theme.NoTitleBar">
         <activity android:name="com.melvold.sms.client.activities.MainMenuActivity"
                   android:label="@string/app_name">
             <intent-filter>
@@ -23,6 +23,11 @@
     <activity android:name="com.melvold.sms.client.activities.CheckMembersActivity" android:label="@string/app_name" ></activity>
     <activity android:name="com.melvold.sms.client.activities.CheckGroupsActivity" android:label="@string/app_name" ></activity>
     <activity android:name="com.melvold.sms.client.activities.ShowMessagesActivity" android:label="@string/app_name" ></activity>
+    <activity android:name="com.melvold.sms.client.activities.ShowMessageActivity" android:label="@string/app_name" ></activity>
+    <activity android:name="com.melvold.sms.client.activities.AdminMenuActivity" android:label="@string/app_name" ></activity>
+    <activity android:name="com.melvold.sms.client.activities.AdminMembersActivity" android:label="@string/app_name" ></activity>
+    <activity android:name="com.melvold.sms.client.activities.SearchMemberActivity" android:label="@string/app_name" ></activity>
+    <activity android:name="com.melvold.sms.client.activities.ShowMemberActivity" android:label="@string/app_name" ></activity>
     </application>
     
     <uses-permission android:name="android.permission.INTERNET"/>

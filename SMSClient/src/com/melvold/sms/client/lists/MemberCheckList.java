@@ -11,7 +11,7 @@ public class MemberCheckList{
 		memberlist = new ArrayList<String>();
 		
 		for(int i = 0; i <members.size(); i++){
-			memberlist.add(members.get(i).get(1) + ", " + members.get(i).get(0) + "\n" + members.get(i).get(2));
+			memberlist.add(members.get(i).get(3) + ", " + members.get(i).get(2) + "\n" + members.get(i).get(4));
 		}
 		
 	}

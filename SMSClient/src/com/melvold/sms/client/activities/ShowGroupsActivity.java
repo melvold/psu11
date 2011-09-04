@@ -40,7 +40,7 @@ public class ShowGroupsActivity extends ListActivity {
 		
 		
 		lv.setOnItemClickListener(new OnItemClickListener() {
-		@Override
+		
 		public void onItemClick(AdapterView<?> parent, View view,
 		int position, long id) {
 			switch (position) {
@@ -48,7 +48,7 @@ public class ShowGroupsActivity extends ListActivity {
 				String group = groups.get(position).get(1);
 				Intent intent = new Intent();
 				intent.setClass(ShowGroupsActivity.this, ShowMembersActivity.class);
-				intent.putExtra("GROUP", group);
+				intent.putExtra("GID", group);
 				startActivity(intent);
 				break;
 				}

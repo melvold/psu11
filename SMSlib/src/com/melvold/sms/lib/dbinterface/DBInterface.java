@@ -36,32 +36,55 @@ public class DBInterface {
 		return this.communication.get("list.php", nvp);
 	}
 
+	
+/*	public ArrayList<ArrayList<String>> listMemberbyId(String uid){
+		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
+		nvp.add(new BasicNameValuePair("select1", "BID"));
+		nvp.add(new BasicNameValuePair("select2", "Fornavn"));
+		nvp.add(new BasicNameValuePair("select3", "Etternavn"));
+		nvp.add(new BasicNameValuePair("select4", "tlf"));
+		nvp.add(new BasicNameValuePair("select5", "type"));
+		nvp.add(new BasicNameValuePair("select6", "status"));
+		nvp.add(new BasicNameValuePair("table1", "users"));
+		nvp.add(new BasicNameValuePair("table2", "tlf_nr"));
+		nvp.add(new BasicNameValuePair("user", uid));
+		//nvp.add(new BasicNameValuePair("users/tlf", "u_id"));
+		return this.communication.get("list.php", nvp);
+	}*/
+	
 	public ArrayList<ArrayList<String>> listAllMembersWithTlf(){
 		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
-		nvp.add(new BasicNameValuePair("select1", "Fornavn"));
-		nvp.add(new BasicNameValuePair("select2", "Etternavn"));
-		nvp.add(new BasicNameValuePair("select3", "tlf"));
-		nvp.add(new BasicNameValuePair("select4", "type"));
+		nvp.add(new BasicNameValuePair("select1", "users.u_id"));
+		nvp.add(new BasicNameValuePair("select2", "BID"));
+		nvp.add(new BasicNameValuePair("select3", "Fornavn"));
+		nvp.add(new BasicNameValuePair("select4", "Etternavn"));
+		nvp.add(new BasicNameValuePair("select5", "tlf"));
+		nvp.add(new BasicNameValuePair("select6", "type"));
+		nvp.add(new BasicNameValuePair("select7", "status"));
 		nvp.add(new BasicNameValuePair("table1", "users"));
 		nvp.add(new BasicNameValuePair("table2", "tlf_nr"));
 		nvp.add(new BasicNameValuePair("users/tlf", "u_id"));
 		return this.communication.get("list.php", nvp);
 	}
 
-	public ArrayList<ArrayList<String>> listAllMembers(){
+/*	public ArrayList<ArrayList<String>> listAllMembers(){
 		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
-		nvp.add(new BasicNameValuePair("select1", "Fornavn"));
-		nvp.add(new BasicNameValuePair("select2", "Etternavn"));
+		nvp.add(new BasicNameValuePair("select1", "users.u_id"));
+		nvp.add(new BasicNameValuePair("select2", "Fornavn"));
+		nvp.add(new BasicNameValuePair("select3", "Etternavn"));
 		nvp.add(new BasicNameValuePair("table1", "users"));
 		return this.communication.get("list.php", nvp);
-	}
+	}*/
 
 	public ArrayList<ArrayList<String>> listMembersInGroup(String groupID){
 		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
-		nvp.add(new BasicNameValuePair("select1", "Fornavn"));
-		nvp.add(new BasicNameValuePair("select2", "Etternavn"));
-		nvp.add(new BasicNameValuePair("select3", "tlf"));
-		nvp.add(new BasicNameValuePair("select4", "type"));
+		nvp.add(new BasicNameValuePair("select1", "users.u_id"));
+		nvp.add(new BasicNameValuePair("select2", "BID"));
+		nvp.add(new BasicNameValuePair("select3", "Fornavn"));
+		nvp.add(new BasicNameValuePair("select4", "Etternavn"));
+		nvp.add(new BasicNameValuePair("select5", "tlf"));
+		nvp.add(new BasicNameValuePair("select6", "type"));
+		nvp.add(new BasicNameValuePair("select7", "status"));
 		nvp.add(new BasicNameValuePair("table1", "users"));
 		nvp.add(new BasicNameValuePair("table2", "g_kobling"));
 		nvp.add(new BasicNameValuePair("table3", "grupper"));
@@ -205,14 +228,57 @@ public class DBInterface {
 		}
 		return false;
 	}
+	
+	public boolean updatePhone(String uid, String phonenumber, String type){
+		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
+		nvp.add(new BasicNameValuePair("uid", uid));
+		nvp.add(new BasicNameValuePair("table", "tlf_nr"));
+		int i = 1;
+		if(phonenumber!=null){
+			nvp.add(new BasicNameValuePair("field"+i, "tlf"));
+			nvp.add(new BasicNameValuePair("value"+i, phonenumber));
+			i++;
+		}
+		if(type!=null){
+			nvp.add(new BasicNameValuePair("field"+i, "type"));
+			nvp.add(new BasicNameValuePair("value"+i, type));
+			i++;
+		}
+		if(i>1){
+			return this.communication.post("update.php", nvp);
+		}
+		return false;
+	}
 
+	public boolean deleteUser(String uid){
+		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
+		nvp.add(new BasicNameValuePair("uid", uid));
+		nvp.add(new BasicNameValuePair("table", "users"));
+		if(!this.communication.post("delete.php", nvp)){
+			return false;
+		}
+		nvp.clear();
+		nvp.add(new BasicNameValuePair("uid", uid));
+		nvp.add(new BasicNameValuePair("table", "tlf_nr"));
+		if(!this.communication.post("delete.php", nvp)){
+			return false;
+		}
+		nvp.clear();
+		nvp.add(new BasicNameValuePair("uid", uid));
+		nvp.add(new BasicNameValuePair("table", "g_kobling"));
+		if(!this.communication.post("delete.php", nvp)){
+			return false;
+		}
+		return true;
+	}
 	public boolean logOut(){
 		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
+		getCommunication().setAdministrator(false);
 		return this.communication.post("logout.php", nvp);
 	}
 	
-	public boolean isConnected(){
-		return this.communication.isAuthenticated();
+	public Communication getCommunication(){
+		return this.communication;
 	}
 
 	public static void main(String[] args){

@@ -34,12 +34,11 @@ public class MessageList implements SMSList {
 	public List<Map<String, Object>> getList(){
 		return this.messagelist;
 	}
-	@Override
+	
 	public String[] getFrom() {
 		return this.from;
 	}
 
-	@Override
 	public int[] getTo() {
 		return this.to;
 	}
