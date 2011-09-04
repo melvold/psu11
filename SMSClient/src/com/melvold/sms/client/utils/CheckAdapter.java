@@ -1,7 +1,6 @@
 package com.melvold.sms.client.utils;
 
 import java.util.ArrayList;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
@@ -16,7 +15,7 @@ import android.widget.CheckBox;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
-import com.melvold.sms.R;
+import com.melvold.projects.sms.R;
 
 public class CheckAdapter extends ArrayAdapter<String> implements OnClickListener, SectionIndexer{
 
@@ -76,6 +75,7 @@ public class CheckAdapter extends ArrayAdapter<String> implements OnClickListene
 		
 	}
 	
+	@Override
 	public void onClick(View v) {
 		CheckBox cb = (CheckBox)v;
 		String text = (String)cb.getTag();
@@ -109,14 +109,17 @@ public class CheckAdapter extends ArrayAdapter<String> implements OnClickListene
 		this.notifyDataSetChanged();
 	}
 	
+	@Override
     public int getPositionForSection(int section) {
         return alphaIndexer.get(sections[section]);
     }
 
+	@Override
     public int getSectionForPosition(int position) {
         return 1;
     }
 
+	@Override
     public Object[] getSections() {
          return sections;
     }

@@ -2,7 +2,4 @@
 <resources>
     <string name="app_name">SMS Client</string>
     <string name="exit">Avslutt</string>
-    <string name="back">Tilbake</string>
-    <string name="phones">Telefoner</string>
-    <string name="status">Status</string>
 </resources>

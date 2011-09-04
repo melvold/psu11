@@ -1,6 +1,9 @@
 package com.melvold.sms.client.activities;
 
+import com.melvold.projects.sms.R;
+
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -9,8 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.melvold.sms.R;
 
 public class ExitMessageActivity extends Activity{
 
@@ -30,7 +31,7 @@ public class ExitMessageActivity extends Activity{
 		toast.setView(layout);
 		toast.show();
         new Thread(new Runnable() {
-       
+            @Override
             public void run() {
                 try {
                     Thread.sleep(3000);

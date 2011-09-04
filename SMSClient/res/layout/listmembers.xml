@@ -1,24 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/listlayout"
-	android:layout_height="fill_parent"
-	android:layout_width="fill_parent"
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="1dip"
+    android:paddingBottom="1dip"
+    android:paddingLeft="6dip"
+    android:paddingRight="6dip"
+    android:minHeight="50sp">
+
+    <ImageView android:id="@+id/member_image"
+        android:layout_width="40dip"
+        android:layout_height="40dip"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical"
-	android:background="#81BEF7"
-	android:scrollbars="vertical">
-	<TableLayout
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:stretchColumns="*">
-		<TableRow>
-			<ListView
-			android:id="@android:id/list"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:scrollbars="vertical"
-            android:fadingEdge="vertical"
-            android:fastScrollEnabled="true">
-			</ListView>
-		</TableRow>
-	</TableLayout>
-</FrameLayout>
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="1dip"
+    android:paddingBottom="1dip"
+    android:paddingLeft="6dip"
+    android:paddingRight="6dip"
+    android:minHeight="50sp">
+    <TextView android:id="@+id/member_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:paddingLeft="6dip"
+        android:textSize="17sp"/>
+    <TextView android:id="@+id/member_tlf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:paddingLeft="6dip"
+        android:textSize="17sp"/>
+</LinearLayout>
+</LinearLayout>

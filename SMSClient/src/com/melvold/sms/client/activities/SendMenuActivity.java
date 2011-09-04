@@ -9,7 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.melvold.sms.R;
+import com.melvold.projects.sms.R;
 
 public class SendMenuActivity extends Activity {
 	
@@ -21,7 +21,7 @@ public class SendMenuActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.sendmain);
+		setContentBasedOnLayout();
 		
 		bnumber = (Button)findViewById(R.id.send_nomember);
 		bmembers = (Button)findViewById(R.id.send_members);
@@ -30,7 +30,7 @@ public class SendMenuActivity extends Activity {
 		
 		bnumber.setOnClickListener(new OnClickListener() {
 			
-			
+			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
 				intent.setClass(SendMenuActivity.this, SendNumberActivity.class);
@@ -40,7 +40,7 @@ public class SendMenuActivity extends Activity {
 		
 		bmembers.setOnClickListener(new OnClickListener() {
 			
-			
+			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
 				intent.setClass(SendMenuActivity.this, CheckMembersActivity.class);
@@ -50,7 +50,7 @@ public class SendMenuActivity extends Activity {
 		
 		bgroup.setOnClickListener(new OnClickListener() {
 			
-			
+			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
 				intent.setClass(SendMenuActivity.this, CheckGroupsActivity.class);
@@ -60,7 +60,7 @@ public class SendMenuActivity extends Activity {
 		
 		bknown.setOnClickListener(new OnClickListener() {
 			
-			
+			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
 				intent.setClass(SendMenuActivity.this, SendListKnownActivity.class);
@@ -69,4 +69,18 @@ public class SendMenuActivity extends Activity {
 		});
 	}
 	
+	private void setContentBasedOnLayout(){
+	    WindowManager winMan = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+	    
+	    if (winMan != null){
+	        int orientation = winMan.getDefaultDisplay().getOrientation();
+	        if (orientation == 0){
+	            // Portrait
+	            setContentView(R.layout.sendmain);
+	        }else if (orientation == 1) {
+	        	// Landscape
+	        	setContentView(R.layout.sendmain);
+	        }            
+	    }
+	}
 }

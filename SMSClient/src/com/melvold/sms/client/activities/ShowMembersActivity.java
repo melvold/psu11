@@ -16,41 +16,31 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.melvold.sms.R;
+import com.melvold.projects.sms.R;
 import com.melvold.sms.client.lists.MemberList;
-import com.melvold.sms.client.utils.ShowAdapter;
 
 public class ShowMembersActivity extends ListActivity {
 
 	
 	private ArrayList<ArrayList<String>> members;
-	private boolean admin;
-	private String group;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.listmembers);
-		group = getIntent().getStringExtra("GID");
-		admin = getIntent().getBooleanExtra("ADMIN", false);
-	}
-	
-	protected void onResume(){
-		super.onResume();
+		String group = getIntent().getStringExtra("GROUP");
 		
-		if(group != null && !group.equals("")){
+		if(!group.equals(null)){
 			members = MainMenuActivity.dbi.listMembersInGroup(group);
-		}else if(admin){
-			members = MainMenuActivity.dbi.listAllMembersWithTlf();
 		}else{
 			finish();
 		}
-		//System.out.println(members.get(0).get(0) + " " + members.get(0).get(1) + " " + members.get(0).get(2) + " ");
+		
 		MemberList ml = new MemberList(members);
 		
-		ShowAdapter sa = new ShowAdapter(this, R.layout.custom_row, (ArrayList<String>)ml.getList());
+		SimpleAdapter sa = new SimpleAdapter(this, ml.getList(), R.layout.listmembers, ml.getFrom(), ml.getTo());
 		setListAdapter(sa);
 
 		ListView lv = getListView();
@@ -58,28 +48,19 @@ public class ShowMembersActivity extends ListActivity {
 		registerForContextMenu(lv);
 
 		lv.setOnItemClickListener(new OnItemClickListener() {
-		
+		@Override
 		public void onItemClick(AdapterView<?> parent, View view,
 		int position, long id) {
 			switch (position) {
 				default:
-					if(admin){
-						Intent intent = new Intent();
-						intent.putExtra("UID", members.get(position).get(0));
-						intent.putExtra("BID", members.get(position).get(1));
-						intent.putExtra("NAME", members.get(position).get(2) + " " + members.get(position).get(3));
-						intent.putExtra("PHONE", members.get(position).get(4));
-						intent.putExtra("PHONETYPE", members.get(position).get(5));
-						intent.putExtra("STATUS", members.get(position).get(6));
-						intent.setClass(getApplicationContext(), ShowMemberActivity.class);
-						startActivity(intent);
-					}
+					//Toast.makeText(getApplicationContext(), "Clicked on member " + position, Toast.LENGTH_LONG).show();
 					break;
 				}
 		}
 		
 	});
 	}
+	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 	                                ContextMenuInfo menuInfo) {

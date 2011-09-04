@@ -10,15 +10,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ViewFlipper;
 
-import com.melvold.sms.R;
+import com.melvold.projects.sms.R;
 import com.melvold.sms.client.utils.Macros;
-import com.melvold.sms.lib.dbinterface.DBInterface;
+import com.melvold.sms.dbinterface.DBInterface;
 
 public class MainMenuActivity extends Activity {
 	
@@ -28,12 +25,6 @@ public class MainMenuActivity extends Activity {
 	private boolean hasConnection;
 	private Button bSend;
 	private Button bGroups;
-	private Button bAdmin;
-	private Button bnumber;
-	private Button bmembers;
-	private Button bgroup;
-	private Button bknown;
-	private ViewFlipper vf;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +44,22 @@ public class MainMenuActivity extends Activity {
 			intent.setClass(MainMenuActivity.this, LoginActivity.class);
 			startActivityForResult(intent, Macros.LOGIN);
 		}else{
+/*			setContentBasedOnLayout();
+			
+			bSend = (Button)findViewById(R.id.menu_send);
+			bGroups = (Button)findViewById(R.id.menu_show_groups);
+			bSend.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+
+				}
+			});
+			bGroups.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+
+				}
+			});*/
 			finish();
 		}
 	}
@@ -69,90 +76,26 @@ public class MainMenuActivity extends Activity {
 					if(dbi == null){
 						finish();
 					}else{
-						setContentView(R.layout.main);
+						setContentBasedOnLayout();
 						
 						bSend = (Button)findViewById(R.id.menu_send);
 						bGroups = (Button)findViewById(R.id.menu_show_groups);
-						bAdmin = (Button)findViewById(R.id.menu_admin);
-						bnumber = (Button)findViewById(R.id.send_nomember);
-						bmembers = (Button)findViewById(R.id.send_members);
-						bgroup = (Button)findViewById(R.id.send_group);
-						bknown = (Button)findViewById(R.id.send_known);
-						
-						vf = (ViewFlipper)findViewById(R.id.vfmain);
-						
-
-						
-						if(dbi.getCommunication().isAdministrator()){
-							bAdmin.setVisibility(View.INVISIBLE);
-/*							bAdmin.setOnClickListener(new OnClickListener() {
-								
-								public void onClick(View v) {
-									Intent intent = new Intent();
-									intent.setClass(getApplicationContext(), AdminMenuActivity.class);
-									startActivity(intent);
-								}
-							});*/
-						}else{
-							bAdmin.setVisibility(View.INVISIBLE);
-						}
-						
 						bSend.setOnClickListener(new View.OnClickListener() {
-							
+							@Override
 							public void onClick(View v) {
-								setVFAnimation("forward");
-								vf.showNext();
+								Intent intent = new Intent();
+								intent.setClass(MainMenuActivity.this, SendMenuActivity.class);
+								startActivity(intent);
 							}
 						});
 						bGroups.setOnClickListener(new View.OnClickListener() {
-							
+							@Override
 							public void onClick(View v) {
 								Intent intent = new Intent();
 								intent.setClass(MainMenuActivity.this, ShowGroupsActivity.class);
 								startActivity(intent);
 							}
 						});
-						
-						bnumber.setOnClickListener(new OnClickListener() {
-							
-							
-							public void onClick(View v) {
-								Intent intent = new Intent();
-								intent.setClass(MainMenuActivity.this, SendNumberActivity.class);
-								startActivity(intent);
-							}
-						});
-						
-						bmembers.setOnClickListener(new OnClickListener() {
-							
-							
-							public void onClick(View v) {
-								Intent intent = new Intent();
-								intent.setClass(MainMenuActivity.this, CheckMembersActivity.class);
-								startActivity(intent);
-							}
-						});
-						
-						bgroup.setOnClickListener(new OnClickListener() {
-							
-							
-							public void onClick(View v) {
-								Intent intent = new Intent();
-								intent.setClass(MainMenuActivity.this, CheckGroupsActivity.class);
-								startActivity(intent);
-							}
-						});
-						
-						bknown.setOnClickListener(new OnClickListener() {
-							
-							
-							public void onClick(View v) {
-								Intent intent = new Intent();
-								intent.setClass(MainMenuActivity.this, SendListKnownActivity.class);
-								startActivity(intent);
-							}
-						});
-						
 					}
 				}
 			}
@@ -218,21 +161,6 @@ public class MainMenuActivity extends Activity {
 	
 	@Override
 	public void onBackPressed(){
-		if(vf.getCurrentView().getId() == R.id.vfmain_second){
-			setVFAnimation("backward");
-			vf.showPrevious();
-		}
+		//dbi.logOut();
 	}
-	
-	public void setVFAnimation(String string) {
-		if(string.equals("forward")){
-			vf.setInAnimation(this, R.anim.slideinf);
-			vf.setOutAnimation(this, R.anim.slideoutf);
-		}else if(string.equals("backward")){
-			vf.setInAnimation(this, R.anim.slideinb);
-			vf.setOutAnimation(this, R.anim.slideoutb);
-		}
-		
-	}
-
 }

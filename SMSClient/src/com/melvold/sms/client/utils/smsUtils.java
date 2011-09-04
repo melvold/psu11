@@ -3,6 +3,12 @@ package com.melvold.sms.client.utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.view.View;
+import android.view.View.MeasureSpec;
+import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+
 public class smsUtils {
 
 	public static boolean isPhoneNumber(String number){

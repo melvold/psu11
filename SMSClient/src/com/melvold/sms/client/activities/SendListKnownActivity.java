@@ -15,7 +15,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.melvold.sms.R;
+import com.melvold.projects.sms.R;
 
 public class SendListKnownActivity extends ListActivity {
 
@@ -49,7 +49,7 @@ public class SendListKnownActivity extends ListActivity {
 		tv_header.setText("Velg kategori");
 		
 		lv.setOnItemClickListener(new OnItemClickListener() {
-		
+		@Override
 		public void onItemClick(AdapterView<?> parent, View view,
 		int position, long id) {
 			Intent intent = new Intent();

@@ -1,7 +1,11 @@
 package com.melvold.sms.client.lists;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.melvold.projects.sms.R;
 
 public class MemberCheckList{
 	
@@ -11,7 +15,7 @@ public class MemberCheckList{
 		memberlist = new ArrayList<String>();
 		
 		for(int i = 0; i <members.size(); i++){
-			memberlist.add(members.get(i).get(3) + ", " + members.get(i).get(2) + "\n" + members.get(i).get(4));
+			memberlist.add(members.get(i).get(1) + ", " + members.get(i).get(0) + "\n" + members.get(i).get(2));
 		}
 		
 	}

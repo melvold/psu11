@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.melvold.sms.R;
+import com.melvold.projects.sms.R;
 
 public class MessageList implements SMSList {
 	
@@ -34,11 +34,12 @@ public class MessageList implements SMSList {
 	public List<Map<String, Object>> getList(){
 		return this.messagelist;
 	}
-	
+	@Override
 	public String[] getFrom() {
 		return this.from;
 	}
 
+	@Override
 	public int[] getTo() {
 		return this.to;
 	}
